@@ -1,0 +1,26 @@
+{
+  "name": "jquery.pagination.js",
+  "version": "0.0.1",
+  "description": "基于jQuery开发的PC端pagination插件",
+  "main": "./dist/jquery.pagination.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KeithChou/jquery.pagination.js.git"
+  },
+  "keywords": [
+    "pagination",
+    "jquery.pagination"
+  ],
+  "author": "unclekeith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KeithChou/jquery.pagination.js/issues"
+  },
+  "homepage": "https://github.com/KeithChou/jquery.pagination.js#readme"
+}
