@@ -16,7 +16,10 @@
 	'use strict';
 
 	var defaults = {
+		count: 2,
 		pageTotal: 9,
+		pageStart: 6,
+		prevCount: 2,
 		commonCls: 'pg-common',
 		currPageCls: 'pg-on',
 		prevContent: '<',
@@ -26,46 +29,78 @@
 		current: 1,
 	};
 
-	var start = 1,
-		end = 5;
 
-	$.fn.pagination = function (opts) {
-		var options = $.extend({}, defaults, opts),
-			html = '',
-			_this = $(this),
-			rankTwo = '<a href="javascript:;" class="'+ options.commonCls +'">1</a><a href="javascript:;" class="'+ options.commonCls +'">2</a>',
+	function Pagination (target, options) {
+		var _this = $(target),
+			index,
+			pagination = this,
+			prevText = '',
+			end = 5,
 			rest = '<span class="'+ options.commonCls +'">...</span>';
 
-		return this.each(function () {
-			if (options.current === 1) {
+		this.setPage = function (index) {
+			var html = '',
+				current = index || options.current,
+				count = options.count,
+				start = 1,
+				prevText = '';
+
+			if (current === 1) {
 				html += '<span class="'+ options.prevContentCls+' '+ options.commonCls +'">'+ options.prevContent +'</span>';
 			} else {
 				html += '<a href="javascript:;" class="'+ options.prevContentCls +' '+ options.commonCls +'">'+ options.prevContent +'</a>';
-				if (options.current >= 2 * (1 + 2)) {
-					html += rankTwo + rest;
-				}
-			}
-			if (end !== options.pageTotal) {
-				if (options.current >= 2 * (1 + 2)) { start = options.current - 2 };
-				if (end - options.current < 2) { end++ };
 			}
 
+			if (current < options.pageStart && end - current < 2) {
+				end++;
+ 			} else if (current >= options.pageStart && current <= options.pageTotal) {
+ 				end = current + options.count <= options.pageTotal ? current + options.count : options.pageTotal;
+ 				start = end === options.pageTotal && options.pageTotal - current < options.count ? options.pageTotal - options.count * 2 : current - options.count;
+ 				for (var i = 0; i < options.prevCount; i++) {
+ 					prevText += '<a href="javascript:;" class="'+ options.commonCls +'">'+ (i + 1) +'</a>';
+ 				}
+ 				html += prevText + rest;
+ 			}
+
 			for (; start <= end; start++) {
-				if (start === options.current) {
-					html += '<span class="'+ options.currPageCls +' '+ options.commonCls +'">'+ options.current +'</span>';
+				if (start === current) {
+					html += '<span class="'+ options.commonCls +'">'+ start +'</span>';
 				} else {
-					html += '<a href="javascript:;" data-page="'+ start +'" class="'+ options.commonCls +'">'+ start +'</a>';
+					html += '<a href="javascript:;" class="'+ options.commonCls +'" data-page="'+ start +'">'+ start +'</a>';
 				}
 			}
+
 			if (options.pageTotal > end) {
 				html += rest;
 			}
-			if (options.current === options.pageTotal) {
+			if (current === options.pageTotal) {
 				html += '<span class="'+ options.nextContentCls +' '+ options.commonCls +'">'+ options.nextContent +'</span>';
 			} else {
 				html += '<a href="javascript:;" class="'+ options.nextContentCls +' '+ options.commonCls +'">'+ options.nextContent +'</a>';
 			}
 			_this.html(html);
-		});
+		}
+
+		this.clickEvent = function () {
+			_this.on('click', 'a', function () {
+				index = +$(this).data('page');
+				pagination.setPage(index);
+			});
+		}
+
+		this.init = function () {
+			this.setPage();
+			this.clickEvent();
+		}
+
+		this.init();
+	}
+
+	$.fn.pagination = function (opts) {
+		var options = $.extend({}, defaults, opts);
+
+		return this.each(function () {
+			new Pagination(this, options);
+		})
 	}
 });
