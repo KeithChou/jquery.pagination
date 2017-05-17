@@ -16,12 +16,12 @@
 	'use strict';
 
 	var defaults = {
-		count: 2,
-		pageTotal: 9,
-		pageStart: 6,
-		prevCount: 2,
+		count: 1,
+		pageTotal: 20,
+		pageStart: 7,
+		prevCount: 3,
 		commonCls: 'pg-common',
-		currPageCls: 'pg-on',
+		currContentCls: 'pg-on',
 		prevContent: '<',
 		prevContentCls: 'pg-prev',
 		nextContent: '>',
@@ -35,7 +35,6 @@
 			index,
 			pagination = this,
 			prevText = '',
-			end = 5,
 			rest = '<span class="'+ options.commonCls +'">...</span>';
 
 		this.setPage = function (index) {
@@ -43,6 +42,7 @@
 				current = index || options.current,
 				count = options.count,
 				start = 1,
+				end = 5,
 				prevText = '';
 
 			if (current === 1) {
@@ -52,7 +52,7 @@
 			}
 
 			if (current < options.pageStart && end - current < 2) {
-				end++;
+				end = current + 2;
  			} else if (current >= options.pageStart && current <= options.pageTotal) {
  				end = current + options.count <= options.pageTotal ? current + options.count : options.pageTotal;
  				start = end === options.pageTotal && options.pageTotal - current < options.count ? options.pageTotal - options.count * 2 : current - options.count;
@@ -64,11 +64,12 @@
 
 			for (; start <= end; start++) {
 				if (start === current) {
-					html += '<span class="'+ options.commonCls +'">'+ start +'</span>';
+					html += '<span class="'+ options.commonCls +' '+ options.currContentCls +'" data-page="'+ start +'">'+ start +'</span>';
 				} else {
 					html += '<a href="javascript:;" class="'+ options.commonCls +'" data-page="'+ start +'">'+ start +'</a>';
 				}
 			}
+
 
 			if (options.pageTotal > end) {
 				html += rest;
@@ -83,7 +84,13 @@
 
 		this.clickEvent = function () {
 			_this.on('click', 'a', function () {
-				index = +$(this).data('page');
+				if ($(this).hasClass(''+ options.nextContentCls +'')) {
+					index = +$('.'+ options.currContentCls +'').data('page') + 1;
+				} else if ($(this).hasClass(''+ options.prevContentCls +'')) {
+					index = +$('.'+ options.currContentCls +'').data('page') - 1;
+				} else {
+					index = +$(this).data('page');
+				}
 				pagination.setPage(index);
 			});
 		}
