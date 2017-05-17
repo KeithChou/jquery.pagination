@@ -16,17 +16,23 @@
 	'use strict';
 
 	var defaults = {
-		count: 1,
-		pageTotal: 20,
-		pageStart: 7,
-		prevCount: 3,
+		count: 2,
+		pageTotal: 8,
+		pageStart: 6,
+		prevCount: 2,
 		commonCls: 'pg-common',
 		currContentCls: 'pg-on',
 		prevContent: '<',
 		prevContentCls: 'pg-prev',
 		nextContent: '>',
 		nextContentCls: 'pg-next',
+		totalContentCls: 'pg-totalWrapper',
+		totalNumCls: 'pg-totalNum',
+		jumpToPageCls: 'pg-jumpWrapper',
+		jumpNum: 'pg-jumpNum',
 		current: 1,
+		jumpBtnContent: '确定',
+		jumpBtnCls: 'pg-jumpBtn'
 	};
 
 
@@ -44,6 +50,12 @@
 				start = 1,
 				end = 5,
 				prevText = '';
+
+			if (options.prevCount >= options.pageTotal || options.pageStart >= options.pageTotal || options.pageStart + options.count > options.pageTotal) {
+				html += '请设置正确的pagination参数';
+				_this.html(html);
+				return;
+			}
 
 			if (current === 1) {
 				html += '<span class="'+ options.prevContentCls+' '+ options.commonCls +'">'+ options.prevContent +'</span>';
@@ -70,15 +82,19 @@
 				}
 			}
 
-
 			if (options.pageTotal > end) {
 				html += rest;
 			}
+
 			if (current === options.pageTotal) {
 				html += '<span class="'+ options.nextContentCls +' '+ options.commonCls +'">'+ options.nextContent +'</span>';
 			} else {
 				html += '<a href="javascript:;" class="'+ options.nextContentCls +' '+ options.commonCls +'">'+ options.nextContent +'</a>';
 			}
+
+			html += '<span class="'+ options.totalContentCls +'">共<span class="'+ options.totalNumCls +'">'+ options.pageTotal +'</span>页，</span>';
+			html += '<span class="'+ options.jumpToPageCls +'">到第<input type="text" class="'+ options.jumpNum +'" />页</span>'
+			html += '<input type="button" value="'+ options.jumpBtnContent +'" class="'+ options.jumpBtnCls +'" />'
 			_this.html(html);
 		}
 
