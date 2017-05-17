@@ -39,9 +39,21 @@
 	function Pagination (target, options) {
 		var _this = $(target),
 			index,
-			pagination = this,
+			obj = this,
 			prevText = '',
 			rest = '<span class="'+ options.commonCls +'">...</span>';
+
+		this.getPageCount = function () {
+			return options.pageTotal;
+		}
+
+		this.setPageCount = function (num) {
+			return options.pageTotal = num;
+		}
+
+		this.getCurrent = function () {
+			return options.current;
+		}
 
 		this.setPage = function (index) {
 			var html = '',
@@ -51,7 +63,7 @@
 				end = 5,
 				prevText = '';
 
-			if (options.prevCount >= options.pageTotal || options.pageStart >= options.pageTotal || options.pageStart + options.count > options.pageTotal) {
+			if (options.current > options.pageTotal || options.prevCount >= options.pageTotal || options.pageStart >= options.pageTotal || options.pageStart + options.count > options.pageTotal) {
 				html += '请设置正确的pagination参数';
 				_this.html(html);
 				return;
@@ -98,7 +110,7 @@
 			_this.html(html);
 		}
 
-		this.clickEvent = function () {
+		this.eventBind = function () {
 			_this.on('click', 'a', function () {
 				if ($(this).hasClass(''+ options.nextContentCls +'')) {
 					index = +$('.'+ options.currContentCls +'').data('page') + 1;
@@ -107,23 +119,51 @@
 				} else {
 					index = +$(this).data('page');
 				}
-				pagination.setPage(index);
+				obj.setPage(index);
+			});
+			_this.on('input keydown', '.' + options.jumpNum, function (event) {
+				var $this = $(this);
+				if (event.type === 'input') {
+					var reg = /([^\d]+)/g,
+						text = $(this).val();
+					if (reg.test(text)) {
+						$this.val(text.replace(reg, ''));
+					}
+					+$this.val() > options.pageTotal && $this.val(options.pageTotal);
+					if ($this.val() === '0') { $this.val(1) };
+				} else {
+					if (event.keyCode === 13) {
+						var index = +$this.val();
+						obj.setPage(index);
+					}
+				}
+			});
+			_this.on('click', '.' + options.jumpBtnCls, function () {
+				var index = +($('.' + options.jumpNum).val());
+				obj.setPage(index);
 			});
 		}
 
 		this.init = function () {
 			this.setPage();
-			this.clickEvent();
+			this.eventBind();
 		}
 
 		this.init();
 	}
 
-	$.fn.pagination = function (opts) {
+	$.fn.pagination = function (opts, callback) {
 		var options = $.extend({}, defaults, opts);
-
+		if (typeof opts === 'function') {
+			callback = opts;
+			opts = {};
+		} else {
+			opts = opts || {};
+			callback = callback || function () {};
+		}
 		return this.each(function () {
-			new Pagination(this, options);
+			var pagination = new Pagination(this, options);
+			callback(pagination);
 		})
 	}
 });
