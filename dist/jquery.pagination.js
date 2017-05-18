@@ -1,6 +1,6 @@
 /*!
  * jQuery.pagination.js 插件
- * @version v0.0.1
+ * @version v0.1.0
  * @author  unclekeith
 */
 ;(function (global, factory) {
