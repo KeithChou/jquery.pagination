@@ -32,7 +32,8 @@
 		jumpNum: 'pg-jumpNum',
 		current: 1,
 		jumpBtnContent: '确定',
-		jumpBtnCls: 'pg-jumpBtn'
+		jumpBtnCls: 'pg-jumpBtn',
+		render: function () {}
 	};
 
 
@@ -147,6 +148,7 @@
 		this.init = function () {
 			this.setPage();
 			this.eventBind();
+			options.render();
 		}
 
 		this.init();
@@ -164,6 +166,7 @@
 		return this.each(function () {
 			var pagination = new Pagination(this, options);
 			callback(pagination);
-		})
+		});
 	}
 });
+
