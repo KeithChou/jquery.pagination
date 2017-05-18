@@ -3,26 +3,18 @@
  * @version v0.1.1
  * @author  unclekeith
 */
-;(function (factory) {
-	'use strict';
-	if (define === 'function' && (define.amd || define.cmd) && !jQuery) {
-		define[('jquery', factory)];
-	} else if (typeof exports === 'object' && exports) {
-		module.exports = function(root, jQuery) {
-			if (jQuery === undefined) {
-				if (typeof window !== 'undefined') {
-					jQuery = require('jquery');
-				} else {
-					jQuery = require('jquery')(root);
-				}
-			}
-			factory(jQuery);
-			return jQuery;
-		};
-	} else {
-		factory(jQuery);
-	}
-})(function ($) {
+;(function(global, factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], function($) {
+        	return factory($, global, global.document, global.Math);
+        });
+    } else if (typeof exports === "object" && exports) {
+        module.exports = factory(require('jquery'), global, global.document, global.Math);
+    } else {
+        factory(jQuery, global, global.document, global.Math);
+    }
+})(typeof window !== 'undefined' ? window : this, function($, window, document, Math, undefined) {
 	'use strict';
 
 	var defaults = {
@@ -179,4 +171,3 @@
 		});
 	}
 });
-
