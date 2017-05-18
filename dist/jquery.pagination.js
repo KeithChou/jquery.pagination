@@ -114,7 +114,7 @@
 		}
 
 		this.eventBind = function () {
-			_this.on('click', 'a', function () {
+			_this.on('click', 'a.'+ options.commonCls, function () {
 				if ($(this).hasClass(''+ options.nextContentCls +'')) {
 					index = +$('.'+ options.currContentCls +'').data('page') + 1;
 				} else if ($(this).hasClass(''+ options.prevContentCls +'')) {
@@ -123,6 +123,7 @@
 					index = +$(this).data('page');
 				}
 				obj.setPage(index);
+				options.render();
 			});
 			_this.on('input keydown', '.' + options.jumpNum, function (event) {
 				var $this = $(this);
@@ -136,21 +137,26 @@
 					if ($this.val() === '0') { $this.val(1) };
 				} else {
 					if (event.keyCode === 13) {
-						var index = +$this.val();
-						obj.setPage(index);
+						setTimeout(function () {
+							var index = +$this.val();
+							index !== +$('.'+ options.currContentCls).text() && obj.setPage(index);
+						}, 0);
+						options.render();
 					}
 				}
 			});
 			_this.on('click', '.' + options.jumpBtnCls, function () {
-				var index = +($('.' + options.jumpNum).val());
-				obj.setPage(index);
+				setTimeout(function () {
+					var index = +($('.' + options.jumpNum).val());
+					index !== +$('.' + options.currContentCls).text() && obj.setPage(index);
+				}, 0);
+				options.render();
 			});
 		}
 
 		this.init = function () {
 			this.setPage();
 			this.eventBind();
-			options.render();
 		}
 
 		this.init();
