@@ -1,18 +1,28 @@
 /*!
  * jQuery.pagination.js 插件
- * @version v0.1.0
+ * @version v0.1.1
  * @author  unclekeith
 */
-;(function (global, factory) {
+;(function (factory) {
 	'use strict';
-	if (define === 'function' && define.amd) {
-		return factory($, global, global.document, global.Math);
+	if (define === 'function' && (define.amd || define.cmd) && !jQuery) {
+		define[('jquery', factory)];
 	} else if (typeof exports === 'object' && exports) {
-		module.exports = factory(require('jquery'), global, global.document, global.Math);
+		module.exports = function(root, jQuery) {
+			if (jQuery === undefined) {
+				if (typeof window !== 'undefined') {
+					jQuery = require('jquery');
+				} else {
+					jQuery = require('jquery')(root);
+				}
+			}
+			factory(jQuery);
+			return jQuery;
+		};
 	} else {
-		factory(jQuery, global, global.document, global.Math);
+		factory(jQuery);
 	}
-})(typeof window !== 'undefined' ? window : this, function ($, window, document, Math, undefined) {
+})(function ($) {
 	'use strict';
 
 	var defaults = {
