@@ -1,6 +1,6 @@
 /*!
  * jQuery.pagination.js 插件
- * @version v0.1.1
+ * @version v0.1.3
  * @author  unclekeith
 */
 ;(function(global, factory) {
@@ -10,7 +10,7 @@
         	return factory($, global, global.document, global.Math);
         });
     } else if (typeof exports === "object" && exports) {
-        module.exports = factory(require('jquery'), global, global.document, global.Math);
+        module.exports = factory(jQuery, global, global.document, global.Math);
     } else {
         factory(jQuery, global, global.document, global.Math);
     }
