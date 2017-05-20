@@ -42,7 +42,7 @@ jqery.pagination支持无参数的调用，每个参数都会有默认值，如�
 	jumpToPageCls: 'pg-jumpWrapper',		// 文字样式钩子
 	jumpNum: 'pg-jumpNum',				// 输入框样式钩子
 	current: 1,					// 当前页
-	jumpBtnContent: '确定',			      // 按钮文案
+	jumpBtnContent: '确定',    		       // 按钮文案
 	jumpBtnCls: 'pg-jumpBtn',			// 按钮样式钩子
 	callback: function(obj) {},			// 回调函数，接收一个对象作为参数
 	render: function() {}				// 异步接口，是否跨域请求取决于用户需要
