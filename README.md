@@ -1,4 +1,8 @@
+<<<<<<< HEAD:README.MD
 ## jquery.pagination
+=======
+# jquery.pagination
+>>>>>>> 5e2554acecaed42d7d85ab9dc59ee693aefc7256:README.md
 基于jQuery开发的分页插件。可实现淘**淘宝**、**京东**等著名电商网站的分页效果。
 ## 安装
 - 直接引入`jquery.pagination.js || jquery.pagination.css`。
@@ -27,32 +31,36 @@
 jqery.pagination支持无参数的调用，每个参数都会有默认值，如果想实现自定义的功能，可以使用自定义参数。参数默认值如下：
 	
 	var defaults = {
-		count: 2,								// 出现省略号时的当前分页的前后分页个数
-		pageTotal: 8,							// 分页总数
-		pageStart: 6,							// 出现省略号时的起始分页码
-		prevCount: 2,							// 出现省略号时的最前显示分页个数
-		commonCls: 'pg-common',					// 分页共同样式钩子
-		currContentCls: 'pg-on',				// 当前分页样式钩子
-		prevContent: '<',						// 上一页文案
-		prevContentCls: 'pg-prev',				// 上一页样式钩子
-		nextContent: '>',						// 下一页文案
-		nextContentCls: 'pg-next',				// 下一页样式钩子
-		totalContentCls: 'pg-totalWrapper',		// 文字样式钩子
-		totalNumCls: 'pg-totalNum',				// 总页数样式钩子
-		jumpToPageCls: 'pg-jumpWrapper',		// 文字样式钩子
-		jumpNum: 'pg-jumpNum',					// 输入框样式钩子
-		current: 1,								// 当前页
-		jumpBtnContent: '确定',					// 按钮文案
-		jumpBtnCls: 'pg-jumpBtn',				// 按钮样式钩子
-		callback: function(obj) {},				// 回调函数，接收一个对象作为参数
-		render: function() {}					// 异步接口，是否跨域请求取决于用户需要
+	count: 2,					// 出现省略号时的当前分页的前后分页个数
+	pageTotal: 8,					// 分页总数
+	pageStart: 6,					// 出现省略号时的起始分页码
+	prevCount: 2,					// 出现省略号时的最前显示分页个数
+	commonCls: 'pg-common',				// 分页共同样式钩子
+	currContentCls: 'pg-on',			// 当前分页样式钩子
+	prevContent: '<',				// 上一页文案
+	prevContentCls: 'pg-prev',			// 上一页样式钩子
+	nextContent: '>',				// 下一页文案
+	nextContentCls: 'pg-next',			// 下一页样式钩子
+	totalContentCls: 'pg-totalWrapper',		// 文字样式钩子
+	totalNumCls: 'pg-totalNum',			// 总页数样式钩子
+	jumpToPageCls: 'pg-jumpWrapper',		// 文字样式钩子
+	jumpNum: 'pg-jumpNum',				// 输入框样式钩子
+	current: 1,					// 当前页
+	jumpBtnContent: '确定',    		       // 按钮文案
+	jumpBtnCls: 'pg-jumpBtn',			// 按钮样式钩子
+	callback: function(obj) {},			// 回调函数，接收一个对象作为参数
+	render: function() {}				// 异步接口，是否跨域请求取决于用户需要
 	};
 
 ### callback方法
 #### obj.getPageCount
 获取当前的总分页数，即pageTotal，无参数。
 #### obj.setPageCount
+<<<<<<< HEAD:README.MD
 设置当前的总分页数，接收一个参数，即要设置的总分页数（pageTotal）
+=======
+设置当前的总分页数，接收一个参数，即要设置的总分页数（pageTotal） 
+>>>>>>> 5e2554acecaed42d7d85ab9dc59ee693aefc7256:README.md
 #### obj.getCurrent
 获取当前分页，无参数
 ### render方法（异步接口方法）
