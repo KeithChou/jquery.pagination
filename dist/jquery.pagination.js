@@ -20,25 +20,25 @@
 	'use strict';
 
 	var defaults = {
-		count: 2,
-		pageTotal: 8,
-		pageStart: 6,
-		prevCount: 2,
-		commonCls: 'pg-common',
-		currContentCls: 'pg-on',
-		prevContent: '<',
-		prevContentCls: 'pg-prev',
-		nextContent: '>',
-		nextContentCls: 'pg-next',
-		totalContentCls: 'pg-totalWrapper',
-		totalNumCls: 'pg-totalNum',
-		jumpToPageCls: 'pg-jumpWrapper',
-		jumpNum: 'pg-jumpNum',
-		current: 1,
-		jumpBtnContent: '确定',
-		jumpBtnCls: 'pg-jumpBtn',
-		callback: function() {},
-		render: function() {}
+		count: 2, 							// 出现省略号时的当前分页的前后分页个数
+		pageTotal: 8, 						// 分页总数
+		pageStart: 6, 						// 出现省略号时的起始分页码
+		prevCount: 2, 						// 出现省略号时的最前显示分页个数
+		commonCls: 'pg-common', 			// 分页共同样式钩子
+		currContentCls: 'pg-on', 			// 当前分页样式钩子
+		prevContent: '<', 					// 上一页文案
+		prevContentCls: 'pg-prev', 			// 上一页样式钩子
+		nextContent: '>', 					// 下一页文案
+		nextContentCls: 'pg-next',		 	// 下一页样式钩子
+		totalContentCls: 'pg-totalWrapper', // 文字样式钩子
+		totalNumCls: 'pg-totalNum', 		// 总页数样式钩子
+		jumpToPageCls: 'pg-jumpWrapper', 	// 文字样式钩子
+		jumpNum: 'pg-jumpNum', 				// 输入框样式钩子
+		current: 1, 						// 当前页
+		jumpBtnContent: '确定', 			// 按钮文案
+		jumpBtnCls: 'pg-jumpBtn', 			// 按钮样式钩子
+		callback: function() {}, 			// 回调函数，接收一个对象作为参数
+		render: function() {} 				// 异步接口
 	};
 
 	function Pagination(target, options) {
