@@ -1,4 +1,3 @@
-## jquery.pagination
 # jquery.pagination
 基于jQuery开发的分页插件。可实现淘**淘宝**、**京东**等著名电商网站的分页效果。
 ## 安装
