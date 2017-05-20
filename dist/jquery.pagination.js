@@ -1,19 +1,21 @@
 /*!
  * jQuery.pagination.js 插件
- * @version v0.1.3
+ * @version v0.1.4
  * @author  unclekeith
-*/
-;(function(global, factory) {
-    'use strict';
-    if (typeof define === 'function' && define.amd) {
-        define(['jquery'], function($) {
-        	return factory($, global, global.document, global.Math);
-        });
-    } else if (typeof exports === "object" && exports) {
-        module.exports = factory(jQuery, global, global.document, global.Math);
-    } else {
-        factory(jQuery, global, global.document, global.Math);
-    }
+ * 调用方法： $('selector').pagination();
+ */
+;
+(function(global, factory) {
+	'use strict';
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], function($) {
+			return factory($, global, global.document, global.Math);
+		});
+	} else if (typeof exports === "object" && exports) {
+		module.exports = factory($, global, global.document, global.Math);
+	} else {
+		factory(jQuery, global, global.document, global.Math);
+	}
 })(typeof window !== 'undefined' ? window : this, function($, window, document, Math, undefined) {
 	'use strict';
 
@@ -35,30 +37,30 @@
 		current: 1,
 		jumpBtnContent: '确定',
 		jumpBtnCls: 'pg-jumpBtn',
-		render: function () {}
+		callback: function() {},
+		render: function() {}
 	};
 
-
-	function Pagination (target, options) {
+	function Pagination(target, options) {
 		var _this = $(target),
 			index,
 			obj = this,
 			prevText = '',
-			rest = '<span class="'+ options.commonCls +'">...</span>';
+			rest = '<span class="' + options.commonCls + '">...</span>';
 
-		this.getPageCount = function () {
+		this.getPageCount = function() {
 			return options.pageTotal;
 		}
 
-		this.setPageCount = function (num) {
+		this.setPageTotal = function(num) {
 			return options.pageTotal = num;
 		}
 
-		this.getCurrent = function () {
+		this.getCurrent = function() {
 			return options.current;
 		}
 
-		this.setPage = function (index) {
+		this.setPage = function(index) {
 			var html = '',
 				current = index || options.current,
 				count = options.count,
@@ -66,6 +68,7 @@
 				end = 5,
 				prevText = '';
 
+			options.current = index || 1;
 			if (options.current > options.pageTotal || options.prevCount >= options.pageTotal || options.pageStart >= options.pageTotal || options.pageStart + options.count > options.pageTotal) {
 				html += '请设置正确的pagination参数';
 				_this.html(html);
@@ -73,27 +76,27 @@
 			}
 
 			if (current === 1) {
-				html += '<span class="'+ options.prevContentCls+' '+ options.commonCls +'">'+ options.prevContent +'</span>';
+				html += '<span class="' + options.prevContentCls + ' ' + options.commonCls + '">' + options.prevContent + '</span>';
 			} else {
-				html += '<a href="javascript:;" class="'+ options.prevContentCls +' '+ options.commonCls +'">'+ options.prevContent +'</a>';
+				html += '<a href="javascript:;" class="' + options.prevContentCls + ' ' + options.commonCls + '">' + options.prevContent + '</a>';
 			}
 
 			if (current < options.pageStart && end - current < 2) {
 				end = current + 2;
- 			} else if (current >= options.pageStart && current <= options.pageTotal) {
- 				end = current + options.count <= options.pageTotal ? current + options.count : options.pageTotal;
- 				start = end === options.pageTotal && options.pageTotal - current < options.count ? options.pageTotal - options.count * 2 : current - options.count;
- 				for (var i = 0; i < options.prevCount; i++) {
- 					prevText += '<a href="javascript:;" class="'+ options.commonCls +'">'+ (i + 1) +'</a>';
- 				}
- 				html += prevText + rest;
- 			}
+			} else if (current >= options.pageStart && current <= options.pageTotal) {
+				end = current + options.count <= options.pageTotal ? current + options.count : options.pageTotal;
+				start = end === options.pageTotal && options.pageTotal - current < options.count ? options.pageTotal - options.count * 2 : current - options.count;
+				for (var i = 0; i < options.prevCount; i++) {
+					prevText += '<a href="javascript:;" class="' + options.commonCls + '" data-page="' + (i + 1) + '">' + (i + 1) + '</a>';
+				}
+				html += prevText + rest;
+			}
 
 			for (; start <= end; start++) {
 				if (start === current) {
-					html += '<span class="'+ options.commonCls +' '+ options.currContentCls +'" data-page="'+ start +'">'+ start +'</span>';
+					html += '<span class="' + options.commonCls + ' ' + options.currContentCls + '" data-page="' + start + '">' + start + '</span>';
 				} else {
-					html += '<a href="javascript:;" class="'+ options.commonCls +'" data-page="'+ start +'">'+ start +'</a>';
+					html += '<a href="javascript:;" class="' + options.commonCls + '" data-page="' + start + '">' + start + '</a>';
 				}
 			}
 
@@ -102,59 +105,59 @@
 			}
 
 			if (current === options.pageTotal) {
-				html += '<span class="'+ options.nextContentCls +' '+ options.commonCls +'">'+ options.nextContent +'</span>';
+				html += '<span class="' + options.nextContentCls + ' ' + options.commonCls + '">' + options.nextContent + '</span>';
 			} else {
-				html += '<a href="javascript:;" class="'+ options.nextContentCls +' '+ options.commonCls +'">'+ options.nextContent +'</a>';
+				html += '<a href="javascript:;" class="' + options.nextContentCls + ' ' + options.commonCls + '">' + options.nextContent + '</a>';
 			}
 
-			html += '<span class="'+ options.totalContentCls +'">共<span class="'+ options.totalNumCls +'">'+ options.pageTotal +'</span>页，</span>';
-			html += '<span class="'+ options.jumpToPageCls +'">到第<input type="text" class="'+ options.jumpNum +'" />页</span>'
-			html += '<input type="button" value="'+ options.jumpBtnContent +'" class="'+ options.jumpBtnCls +'" />'
+			html += '<span class="' + options.totalContentCls + '">共<span class="' + options.totalNumCls + '">' + options.pageTotal + '</span>页，</span>';
+			html += '<span class="' + options.jumpToPageCls + '">到第<input type="text" class="' + options.jumpNum + '" />页</span>'
+			html += '<input type="button" value="' + options.jumpBtnContent + '" class="' + options.jumpBtnCls + '" />'
 			_this.html(html);
+			options.render();
+			typeof options.callback === 'function' && options.callback(obj);
 		}
 
-		this.eventBind = function () {
-			_this.on('click', 'a.'+ options.commonCls, function () {
-				if ($(this).hasClass(''+ options.nextContentCls +'')) {
-					index = +$('.'+ options.currContentCls +'').data('page') + 1;
-				} else if ($(this).hasClass(''+ options.prevContentCls +'')) {
-					index = +$('.'+ options.currContentCls +'').data('page') - 1;
+		this.eventBind = function() {
+			_this.on('click', 'a.' + options.commonCls, function() {
+				if ($(this).hasClass('' + options.nextContentCls + '')) {
+					index = obj.getCurrent() + 1;
+				} else if ($(this).hasClass('' + options.prevContentCls + '')) {
+					index = obj.getCurrent() - 1;
 				} else {
 					index = +$(this).data('page');
 				}
 				obj.setPage(index);
-				options.render();
 			});
-			_this.on('input keydown', '.' + options.jumpNum, function (event) {
+			_this.on('input keydown', '.' + options.jumpNum, function(event) {
 				var $this = $(this);
 				if (event.type === 'input') {
 					var reg = /([^\d]+)/g,
 						text = $(this).val();
 					if (reg.test(text)) {
 						$this.val(text.replace(reg, ''));
-					}
-					+$this.val() > options.pageTotal && $this.val(options.pageTotal);
-					if ($this.val() === '0') { $this.val(1) };
+					} + $this.val() > options.pageTotal && $this.val(options.pageTotal);
+					if ($this.val() === '0') {
+						$this.val(1)
+					};
 				} else {
 					if (event.keyCode === 13) {
-						setTimeout(function () {
+						setTimeout(function() {
 							var index = +$this.val();
-							index !== +$('.'+ options.currContentCls).text() && obj.setPage(index);
+							index !== obj.getCurrent() && obj.setPage(index);
 						}, 0);
-						options.render();
 					}
 				}
 			});
-			_this.on('click', '.' + options.jumpBtnCls, function () {
-				setTimeout(function () {
+			_this.on('click', '.' + options.jumpBtnCls, function() {
+				setTimeout(function() {
 					var index = +($('.' + options.jumpNum).val());
 					index !== +$('.' + options.currContentCls).text() && obj.setPage(index);
 				}, 0);
-				options.render();
 			});
 		}
 
-		this.init = function () {
+		this.init = function() {
 			this.setPage();
 			this.eventBind();
 		}
@@ -162,18 +165,10 @@
 		this.init();
 	}
 
-	$.fn.pagination = function (opts, callback) {
+	$.fn.pagination = function(opts) {
 		var options = $.extend({}, defaults, opts);
-		if (typeof opts === 'function') {
-			callback = opts;
-			opts = {};
-		} else {
-			opts = opts || {};
-			callback = callback || function () {};
-		}
-		return this.each(function () {
-			var pagination = new Pagination(this, options);
-			callback(pagination);
+		return this.each(function() {
+			new Pagination(this, options);
 		});
 	}
 });
