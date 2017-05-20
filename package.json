@@ -1,6 +1,6 @@
 {
   "name": "jquery.pagination",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "基于jQuery开发的PC端pagination插件",
   "main": "./dist/jquery.pagination.js",
   "directories": {

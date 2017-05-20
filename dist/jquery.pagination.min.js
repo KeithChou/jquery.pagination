@@ -1,6 +1,6 @@
 /*!
  * jQuery.pagination.js 插件
- * @version v0.1.4
+ * @version v0.1.5
  * @author  unclekeith
  * 调用方法： $('selector').pagination();
  */
