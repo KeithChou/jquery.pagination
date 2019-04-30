@@ -71,92 +71,100 @@ jqery.pagination支持无参数的调用，每个参数都会有默认值，如�
 		}
 	});
 	
-## 实例
- 后端使用java的SSM框架，使用Maven 在pom,xml中以下依赖： 
-                <dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>1.3.2</version>
-		</dependency>
-                <dependency>
-		 	<groupId>com.github.pagehelper</groupId>
-		 	<artifactId>pagehelper-spring-boot-autoconfigure</artifactId>
-		 	<version>1.2.3</version>
-		</dependency>
-		<dependency>
-		 	<groupId>com.github.pagehelper</groupId>
-		 	<artifactId>pagehelper-spring-boot-starter</artifactId>
-		 	<version>1.2.3</version>
-		</dependency>
+### 实例
+   后端使用java的SSM框架，使用Maven 在pom,xml中以下依赖： 
  
- ### Service层
- 		 PageInfo<Role> selectRoleList(Integer pageNum, Integer pageSize,Entity entity);
- ### ServiceImpl 
-		 @Override
-		 public PageInfo<Role> selectRoleList(Integer pageNum, Integer pageSize, Entity entity) {
-			PageHelper.startPage(pageNum, pageSize);
-			List<Entity> list = roleMapper.selectRoleListByName(entity);
-			PageInfo<Entity> pageInfo = new PageInfo<>(list);
-		 	return pageInfo;
-		}
+    <dependency>
+   	<groupId>org.mybatis.spring.boot</groupId>
+		<artifactId>mybatis-spring-boot-starter</artifactId>
+		<version>1.3.2</version>
+	</dependency>
+    <dependency>
+		<groupId>com.github.pagehelper</groupId>
+		<artifactId>pagehelper-spring-boot-autoconfigure</artifactId>
+                <version>1.2.3</version>
+    </dependency>
+    <dependency>
+		<groupId>com.github.pagehelper</groupId>
+		<artifactId>pagehelper-spring-boot-starter</artifactId>
+		<version>1.2.3</version>
+    </dependency>
+
+### Service层
+    PageInfo<Role> selectRoleList(Integer pageNum, Integer pageSize,Entity entity);
+### ServiceImpl 
+ 
+    @Override
+    public PageInfo<Role> selectRoleList(Integer pageNum, Integer pageSize, Entity entity) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<Entity> list = roleMapper.selectRoleListByName(entity);
+		PageInfo<Entity> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
 		
- ###Controller层
-  	         @GetMapping("index")
-		 public String adminIndex(Entity entity,Model model,
-				@RequestParam(required=true,value="pageNum",defaultValue="1") Integer pageNum,
-				@RequestParam(required=true,value="pageSize",defaultValue="10") Integer pageSize
-				){
+### Controller层
 
-			      PageInfo<Role> pageInfo = roleService.selectRoleList(pageNum, pageSize, entity);
-			      model.addAttribute("rolename", entity.getRolename());
-				  model.addAttribute("pageInfo", pageInfo);	
-			      return "admin/role/setup";
-		}
+    @GetMapping("index")
+	public String adminIndex(Entity entity,Model model,
+		@RequestParam(required=true,value="pageNum",defaultValue="1") Integer pageNum,
+		@RequestParam(required=true,value="pageSize",defaultValue="10") Integer pageSize)
+	{
+		PageInfo<Role> pageInfo = roleService.selectRoleList(pageNum, pageSize, entity);
+		model.addAttribute("rolename", entity.getRolename());
+		model.addAttribute("pageInfo", pageInfo);	
+		return "admin/role/setup";
+	}
 
-##前端
-  在后端 参数部分defaultValue="10"默认每页显示10条，若没有10条数据不显示分页，添加query分页插件；
-  <link rel="stylesheet" th:href="@{/api/css/jquery.pagination.css}">
-  <script th:src="@{/api/js/jquery.pagination.min.js}"></script>
-  html:
-			<table class="table  table-striped" border="1" cellspacing="0" cellpadding="0">
-				<tr>
-					<td><input type="checkbox" name="" id="checkall" value="" /></td>
-					<td>序号</td>
-					<td>角色</td>
-					<td>创建时间</td>
-				</tr>
-				<tr th:each="a,aStat:${pageInfo.list}">
-					<td><input type="checkbox" name="childcheck" th:id="${a.id}" th:value="${a.id}" /></td>
-					<td th:text="${aStat.count}">1</td>
-					<td th:text="${a.rolename}">超级管理员</td>
-					<td th:text="${#strings.substring(a.createtime,0,19)}">2018.05.07 15:30</td>
-				</tr>
-			</table>
-			
-		 <div class="box">
-		       <div id="pagination" class="page center">
-		 </div>
-  js:
+### 前端
+
+   在后端 参数部分defaultValue="10"默认每页显示10条，若没有10条数据不显示分页，添加query分页插件；
  
-  <script>
-	       var pageNum = [[${pageInfo.pageNum}]];
-	      var pages = [[${pageInfo.pages}]];
-	      var pageSize = [[${pageInfo.pageSize}]];
-		    $("#pagination").pagination({
-	            currentPage: pageNum,
-	            totalPage: pages,
-	            isShow: true,
-	            count: pageSize,
-	            homePageText: "首页",
-	            endPageText: "尾页",
-	            prevPageText: "上一页",
-	            nextPageText: "下一页",
-	        });
-	        //点击页数
-	        $('.ui-pagination-page-item').on('click', function () {
-	            var pageNum = $(this).attr('data-current');
-	            //var zhanghao = $("#searchrole").val();   //搜索时的参数，根据实际情况加或者不要
-	            // window.location.href = encodeURI('/sys/role/index?pageNum=' + pageNum+'&rolename='+zhanghao);
-	        });
+    <link rel="stylesheet" th:href="@{/api/css/jquery.pagination.css}">
+  
+    <script th:src="@{/api/js/jquery.pagination.min.js}"></script>
+  
+### html:
+
+    <table class="table  table-striped" border="1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><input type="checkbox" name="" id="checkall" value="" /></td>
+			<td>序号</td>
+			<td>角色</td>
+			<td>创建时间</td>
+		</tr>
+		<tr th:each="a,aStat:${pageInfo.list}">
+			<td><input type="checkbox" name="childcheck" th:id="${a.id}" th:value="${a.id}" /></td>
+			<td th:text="${aStat.count}">1</td>
+			<td th:text="${a.rolename}">超级管理员</td>
+			<td th:text="${#strings.substring(a.createtime,0,19)}">2018.05.07 15:30</td>
+		</tr>
+    </table>
 			
-	  </script>
+    <div class="box">
+		      <div id="pagination" class="page center">
+    </div>
+
+  js:
+  
+    <script>
+	var pageNum = [[${pageInfo.pageNum}]];
+	var pages = [[${pageInfo.pages}]];
+	var pageSize = [[${pageInfo.pageSize}]];
+		 $("#pagination").pagination({
+			    currentPage: pageNum,
+			    totalPage: pages,
+			    isShow: true,
+			    count: pageSize,
+			    homePageText: "首页",
+			    endPageText: "尾页",
+			    prevPageText: "上一页",
+			    nextPageText: "下一页",   
+			});
+			//点击页数
+		$('.ui-pagination-page-item').on('click', function () {
+			    var pageNum = $(this).attr('data-current');
+			    //var zhanghao = $("#searchrole").val();   //搜索时的参数，根据实际情况加或者不要
+			    // window.location.href = encodeURI('/sys/role/index?pageNum=' + pageNum+'&rolename='+zhanghao);
+		 });
+
+	     </script>
